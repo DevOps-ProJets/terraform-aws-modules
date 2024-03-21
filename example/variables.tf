@@ -1,12 +1,12 @@
-/*--------------- VPC ---------------*/
+/*---------------vpc variables---------------*/
 variable "create_vpc" {
   type    = bool
-  default = true
+  default = false
 }
 
 variable "vpc_cidr" {
   type    = string
-  default = "10.0.0.0/16"
+  default = "10.0.0.0/24"
 }
 
 variable "vpc_enable_dns_support" {
@@ -16,12 +16,7 @@ variable "vpc_enable_dns_support" {
 
 variable "vpc_enable_dns_hostnames" {
   type    = bool
-  default = true
-}
-
-variable "vpc_name" {
-  type    = string
-  default = "dev-vpc-01"
+  default = false
 }
 
 variable "vpc_tags" {
