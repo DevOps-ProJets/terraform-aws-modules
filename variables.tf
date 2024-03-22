@@ -65,3 +65,37 @@ variable "public_subnets_tags" {
     Owner = "harshit"
   }]
 }
+
+/*--------------- Private Subnets ---------------*/
+
+variable "private_subnets_cidr" {
+  description = "private subnet cidr block"
+  type        = list(string)
+  default     = ["10.0.0.96/27", "10.0.0.128/26", "10.0.0.192/26"]
+
+}
+
+variable "private_subnets_azs" {
+  description = "private subnet availability zones"
+  type        = string
+  default     = "us-east-2a"
+
+}
+
+variable "private_subnets_tags" {
+  description = "private subnet tags"
+  type        = list(map(string))
+  default = [{
+    Name = "frontend-subnet"
+    Enviroment = "dev"
+    Owner = "harshit"
+    }, {
+    Name = "backend-subnet"
+    Enviroment = "dev"
+    Owner = "harshit"
+  }, {
+    Name = "database-subnet"
+    Enviroment = "dev"
+    Owner = "harshit"
+  }]
+}

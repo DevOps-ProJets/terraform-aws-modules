@@ -27,6 +27,14 @@ module "vpc" {
     public_subnets_azs              = var.public_subnets_azs
     enable_map_public_ip_on_launch = var.enable_map_public_ip_on_launch
     public_subnets_tags            = var.public_subnets_tags
+
+    ################################################################################
+    # Private Subnets
+    ################################################################################
+
+    private_subnets_cidr = var.private_subnets_cidr
+    private_subnets_azs = var.private_subnets_azs
+    private_subnets_tags = var.private_subnets_tags
     
 }
 
