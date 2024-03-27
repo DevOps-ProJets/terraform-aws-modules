@@ -1,7 +1,6 @@
 locals {
   len_public_subnets  = length(var.public_subnets_cidr)
   len_private_subnets = length(var.private_subnets_cidr)
-  # len_database_subnets    = length(var.database_subnets)
 
   # max_subnet_length = max(local.len_private_subnets, local.len_public_subnets, local.len_database_subnets)
 

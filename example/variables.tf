@@ -20,7 +20,7 @@ variable "create_vpc_peering" {
 
 variable "create_nat_gateway" {
   type    = bool
-  default = true
+  default = false
 }
 
 /*---------------vpc variables---------------*/
