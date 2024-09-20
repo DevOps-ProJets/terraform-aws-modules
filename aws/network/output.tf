@@ -1,5 +1,5 @@
 output "vpc-id" {
-  value = aws_vpc.vpc.*.id
+  value       = try(aws_vpc.vpc[0].id, null)
 }
 
 output "public-subnets-id" {

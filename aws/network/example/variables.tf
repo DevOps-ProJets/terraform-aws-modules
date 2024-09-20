@@ -13,13 +13,13 @@ variable "create_vpc" {
   type = bool
 }
 
-# variable "create_igw" {
-#   type = bool
-# }
+variable "create_igw" {
+  type = bool
+}
 
-# variable "create_nat_gateway" {
-#   type = bool
-# }
+variable "create_nat_gateway" {
+  type = bool
+}
 
 /*---------------vpc variables---------------*/
 
@@ -39,61 +39,61 @@ variable "vpc_tags" {
   type = map(string)
 }
 
-# /*--------------- Public Subnets ---------------*/
+/*--------------- Public Subnets ---------------*/
 
-# variable "public_subnets_cidr" {
-#   description = "public subnet cidr block"
-#   type        = list(string)
-# }
+variable "public_subnets_cidr" {
+  description = "public subnet cidr block"
+  type        = list(string)
+}
 
 
-# variable "enable_map_public_ip_on_launch" {
-#   type = bool
-# }
+variable "enable_map_public_ip_on_launch" {
+  type = bool
+}
 
-# variable "public_subnets_tags" {
-#   description = "public subnet tags"
-#   type        = list(map(string))
-# }
+variable "public_subnets_tags" {
+  description = "public subnet tags"
+  type        = list(map(string))
+}
 
-# /*--------------- # Internet Gateway ---------------*/
+/*--------------- # Internet Gateway ---------------*/
 
-# variable "igw_tags" {
-#   type = map(string)
-# }
+variable "igw_tags" {
+  type = map(string)
+}
 
-# /*--------------- Public Route Table ---------------*/
+/*--------------- Public Route Table ---------------*/
 
-# variable "public_route_table_tags" {
-#   type = map(string)
-# }
+variable "public_route_table_tags" {
+  type = map(string)
+}
 
-# /*--------------- Private Subnets ---------------*/
+/*--------------- Private Subnets ---------------*/
 
-# variable "private_subnets_cidr" {
-#   description = "private subnet cidr block"
-#   type        = list(string)
-# }
+variable "private_subnets_cidr" {
+  description = "private subnet cidr block"
+  type        = list(string)
+}
 
-# variable "private_subnets_tags" {
-#   description = "private subnet tags"
-#   type        = list(map(string))
-# }
+variable "private_subnets_tags" {
+  description = "private subnet tags"
+  type        = list(map(string))
+}
 
-# /*--------------- # EIP  ---------------*/
+/*--------------- # EIP  ---------------*/
 
-# variable "eip_tags" {
-#   type = map(string)
-# }
+variable "eip_tags" {
+  type = map(string)
+}
 
-# /*--------------- # NAT Gateway ---------------*/
+/*--------------- # NAT Gateway ---------------*/
 
-# variable "nat_tags" {
-#   type = map(string)
-# }
+variable "nat_tags" {
+  type = map(string)
+}
 
-# /*--------------- Private Route Table ---------------*/
+/*--------------- Private Route Table ---------------*/
 
-# variable "private_route_table_tags" {
-#   type = map(string)
-# }
+variable "private_route_table_tags" {
+  type = map(string)
+}

@@ -28,11 +28,11 @@ locals {
 }
 
 resource "aws_subnet" "public-subnets" {
-  count = local.create_public_subnets && (local.len_public_subnets >= length(var.public_subnets_azs)) ? local.len_public_subnets : 0
+  count = local.create_public_subnets && (local.len_public_subnets > 0) ? local.len_public_subnets : 0
 
   vpc_id                  = aws_vpc.vpc[0].id
   cidr_block              = var.public_subnets_cidr[count.index]
-  availability_zone       = var.public_subnets_azs[count.index]
+  availability_zone       = length(regexall("^[a-z]{2}-", element(var.azs, count.index))) > 0 ? element(var.azs, count.index) : null
   map_public_ip_on_launch = var.enable_map_public_ip_on_launch
   tags                    = var.public_subnets_tags[count.index]
 }
@@ -52,25 +52,7 @@ resource "aws_route_table" "public-rtb" {
   count = local.create_public_subnets ? 1 : 0
 
   vpc_id = aws_vpc.vpc[0].id
-  route {
-    cidr_block = var.vpc_cidr
-    gateway_id = "local"
-  }
   tags = var.public_route_table_tags
-}
-
-
-/*--------------- Route IGW Public RTB ---------------*/
-locals {
-  create_igw = local.create_public_subnets && var.create_igw
-}
-
-resource "aws_route" "public-rtb-igw" {
-  count = local.create_vpc && local.create_igw ? 1 : 0
-
-  route_table_id         = element(aws_route_table.public-rtb[*].id, count.index)
-  destination_cidr_block = var.existing_vpc_cidr
-  gateway_id             = element(aws_internet_gateway.igw[*].id, count.index)
 }
 
 /*--------------- Public RTB + Subnet Association ---------------*/
@@ -82,6 +64,18 @@ resource "aws_route_table_association" "public-route-association-01" {
   route_table_id = aws_route_table.public-rtb[0].id
 }
 
+/*--------------- Route IGW Public RTB ---------------*/
+locals {
+  create_igw = local.create_public_subnets && var.create_igw
+}
+
+resource "aws_route" "public-rtb-igw" {
+  count = local.create_vpc && local.create_igw ? 1 : 0
+
+  route_table_id         = element(aws_route_table.public-rtb[*].id, count.index)
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = element(aws_internet_gateway.igw[*].id, count.index)
+}
 
 ################################################################################
 # Private Subnets
@@ -92,35 +86,30 @@ locals {
 }
 
 resource "aws_subnet" "private-subnets" {
-  count = local.create_private_subnets ? local.len_private_subnets : 0
-
+  count = local.create_private_subnets && (local.len_private_subnets > 0) ? local.len_private_subnets : 0
   vpc_id            = aws_vpc.vpc[0].id
   cidr_block        = var.private_subnets_cidr[count.index]
-  availability_zone = var.private_subnets_azs
+  availability_zone = length(regexall("^[a-z]{2}-", element(var.azs, count.index))) > 0 ? element(var.azs, count.index) : null
+
   tags              = var.private_subnets_tags[count.index]
 }
 
 /*--------------- Private RTB ---------------*/
 
 resource "aws_route_table" "private-rtb" {
-  count = local.create_private_subnets ? 1 : 0
+  count = local.create_private_subnets && local.create_nat_gateway ? 1 : 0
 
   vpc_id = aws_vpc.vpc[0].id
-  route {
-    cidr_block = var.vpc_cidr
-    gateway_id = "local"
-  }
-
   tags = var.private_route_table_tags
 }
 
 /*--------------- Private RTB Association ---------------*/
 
 resource "aws_route_table_association" "private-route-association-01" {
-  count = local.create_private_subnets ? local.len_private_subnets : 0
+  count = local.create_private_subnets && local.create_nat_gateway && length(aws_subnet.private-subnets) > 0 ? local.len_private_subnets : 0
 
-  subnet_id      = element(aws_subnet.private-subnets.*.id, count.index)
-  route_table_id = element(aws_route_table.private-rtb.*.id, 0)
+  subnet_id      = element(aws_subnet.private-subnets[*].id, count.index)
+  route_table_id = element(aws_route_table.private-rtb[*].id, 0)
 }
 
 /*--------------- Elastic IP ---------------*/
@@ -133,7 +122,7 @@ resource "aws_eip" "elastic-ip" {
 
 # /*--------------- NAT Gateway ---------------*/
 locals {
-  create_nat_gateway = local.create_private_subnets && var.create_nat_gateway && local.create_igw
+  create_nat_gateway = var.create_nat_gateway && local.create_igw
 }
 
 resource "aws_nat_gateway" "nat" {

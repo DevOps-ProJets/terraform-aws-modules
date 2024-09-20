@@ -1,5 +1,4 @@
 locals {
-  #   name   = "ex-${basename(path.cwd)}"
   region = var.region
 }
 
@@ -17,48 +16,52 @@ module "vpc" {
   vpc_enable_dns_support   = var.vpc_enable_dns_support
   vpc_enable_dns_hostnames = var.vpc_enable_dns_hostnames
 
-  # ################################################################################
-  # # Publiс Subnets
-  # ################################################################################
+  ################################################################################
+  # Publiс Subnets
+  ################################################################################
 
-  # public_subnets_cidr            = var.public_subnets_cidr
-  # public_subnets_azs             = var.public_subnets_azs
-  # enable_map_public_ip_on_launch = var.enable_map_public_ip_on_launch
-  # public_subnets_tags            = var.public_subnets_tags
+  public_subnets_cidr            = var.public_subnets_cidr
+  enable_map_public_ip_on_launch = var.enable_map_public_ip_on_launch
+  public_subnets_tags            = var.public_subnets_tags
 
-  # ################################################################################
-  # # IGW
-  # ################################################################################
+  ################################################################################
+  # IGW
+  ################################################################################
 
-  # create_igw = var.create_igw
-  # igw_tags   = var.igw_tags
+  create_igw = var.create_igw
+  igw_tags   = var.igw_tags
 
-  # ################################################################################
-  # # Public RTB
-  # ################################################################################
+  ################################################################################
+  # Public RTB
+  ################################################################################
 
-  # public_route_table_tags = var.public_route_table_tags
+  public_route_table_tags = var.public_route_table_tags
 
-  # ################################################################################
-  # # Private Subnets
-  # ################################################################################
+  ################################################################################
+  # Private Subnets
+  ################################################################################
 
-  # private_subnets_cidr = var.private_subnets_cidr
-  # private_subnets_azs  = var.private_subnets_azs
-  # private_subnets_tags = var.private_subnets_tags
+  private_subnets_cidr = var.private_subnets_cidr
+  private_subnets_tags = var.private_subnets_tags
 
-  # ################################################################################
-  # # Elastic IP
-  # ################################################################################
+  ################################################################################
+  # Private RTB
+  ################################################################################
 
-  # eip_tags = var.eip_tags
+  private_route_table_tags = var.private_route_table_tags
 
-  # ################################################################################
-  # # NAT Gateways
-  # ################################################################################
+  ################################################################################
+  # Elastic IP
+  ################################################################################
 
-  # create_nat_gateway = var.create_nat_gateway
-  # nat_tags           = var.nat_tags
+  eip_tags = var.eip_tags
+
+  ################################################################################
+  # NAT Gateways
+  ################################################################################
+
+  create_nat_gateway = var.create_nat_gateway
+  nat_tags           = var.nat_tags
 
 }
 
