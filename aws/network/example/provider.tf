@@ -6,3 +6,14 @@ terraform {
     }
   }
 }
+
+provider "aws" {
+  region = local.region
+  default_tags {
+    tags = {
+      "owner"      = "devops"
+      "env"        = "dev"
+      "managed-by" = "terraform"
+    }
+  }
+}
