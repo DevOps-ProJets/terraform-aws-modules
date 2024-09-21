@@ -9,9 +9,10 @@ module "eks" {
   eks_cluster_role_name            = var.eks_cluster_role_name
   eks_cluster_name                 = var.eks_cluster_name
   eks_cluster_version              = var.eks_cluster_version
-  eks_subnet_ids                   = module.vpc.private-subnets-id # need to check whether we can create nodes in one AZ only
+  eks_subnet_ids                   = module.vpc.private-subnets-id 
 
   # EKS Node Group Variables
+  node_group_subnet_ids = [module.vpc.private-subnets-id[0]]
   eks_node_group_role_name         = var.eks_node_group_role_name
   eks_node_group_name              = var.eks_node_group_name
   eks_node_group_desired_size      = var.eks_node_group_desired_size
