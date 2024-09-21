@@ -98,6 +98,7 @@ resource "aws_eks_node_group" "eks-node-group" {
     max_unavailable = var.eks_node_group_max_unavailable
   }
 
+  ami_type       = var.eks_node_group_ami_type
   instance_types = var.eks_node_group_instance_types
   capacity_type  = var.eks_node_group_capacity_type
   disk_size      = var.eks_node_group_disk_size

@@ -50,6 +50,10 @@ variable "eks_node_group_max_unavailable"{
   type = number
 }
 
+variable "eks_node_group_ami_type"{
+  type = string
+}
+
 variable "eks_node_group_instance_types"{
   type = list(string)
 }
