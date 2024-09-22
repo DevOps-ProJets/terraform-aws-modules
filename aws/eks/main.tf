@@ -44,7 +44,7 @@ resource "aws_eks_cluster" "aws-eks-cluster" {
   # Otherwise, EKS will not be able to properly delete EKS managed EC2 infrastructure such as Security Groups.
   depends_on = [
     aws_iam_role_policy_attachment.AmazonEKSClusterPolicy,
-  #   aws_iam_role_policy_attachment.example-AmazonEKSVPCResourceController,
+    #   aws_iam_role_policy_attachment.example-AmazonEKSVPCResourceController,
   ]
 }
 
@@ -83,11 +83,11 @@ resource "aws_iam_role_policy_attachment" "AmazonEC2ContainerRegistryReadOnly" {
 # --------------------- eks node group ----------------------------------
 
 resource "aws_eks_node_group" "eks-node-group" {
-  for_each       = var.eks_node_groups
-  cluster_name   = aws_eks_cluster.aws-eks-cluster.name
+  for_each        = var.eks_node_groups
+  cluster_name    = aws_eks_cluster.aws-eks-cluster.name
   node_group_name = each.key
-  node_role_arn  = aws_iam_role.eks-node-group-role.arn
-  subnet_ids     = each.value.subnet_ids
+  node_role_arn   = aws_iam_role.eks-node-group-role.arn
+  subnet_ids      = each.value.subnet_ids
 
   scaling_config {
     desired_size = each.value.desired_size
@@ -103,11 +103,11 @@ resource "aws_eks_node_group" "eks-node-group" {
   instance_types = each.value.instance_types
   capacity_type  = each.value.capacity_type
   disk_size      = each.value.disk_size
-  
+
   labels = each.value.node_labels
-  
+
   remote_access {
-    ec2_ssh_key = each.key_name
+    ec2_ssh_key               = each.key_name
     source_security_group_ids = each.security_group_ids
   }
   # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
