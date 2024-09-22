@@ -37,6 +37,9 @@ variable "eks_node_groups" {
     disk_size      = number
     subnet_ids     = list(string)
     max_unavailable = number
+    node_labels    = map(string)
+    key_name = string
+    security_group_ids = set(string)
   }))
 }
 

@@ -103,7 +103,13 @@ resource "aws_eks_node_group" "eks-node-group" {
   instance_types = each.value.instance_types
   capacity_type  = each.value.capacity_type
   disk_size      = each.value.disk_size
-
+  
+  labels = each.value.node_labels
+  
+  remote_access {
+    ec2_ssh_key = each.key_name
+    source_security_group_ids = each.security_group_ids
+  }
   # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
   # This will prevent node destruction on role or policy changes
   depends_on = [
