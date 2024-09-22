@@ -26,42 +26,17 @@ variable "eks_node_group_role_name"{
 
 # ------------- eks Node Group -------------------------------
 
-variable "node_group_subnet_ids"{
-  type = list(string)
+variable "eks_node_groups" {
+  type = map(object({
+    desired_size = number
+    max_size     = number
+    min_size     = number
+    ami_type     = string
+    instance_types = list(string)
+    capacity_type  = string
+    disk_size      = number
+    subnet_ids     = list(string)
+    max_unavailable = number
+  }))
 }
 
-variable "eks_node_group_name"{
-  type = string
-}
-
-variable "eks_node_group_desired_size"{
-  type = number
-}
-
-variable "eks_node_group_max_size"{
-  type = number
-}
-
-variable "eks_node_group_min_size"{
-  type = number
-}
-
-variable "eks_node_group_max_unavailable"{
-  type = number
-}
-
-variable "eks_node_group_ami_type"{
-  type = string
-}
-
-variable "eks_node_group_instance_types"{
-  type = list(string)
-}
-
-variable "eks_node_group_capacity_type"{
-  type = string
-}
-
-variable "eks_node_group_disk_size"{
-  type = number
-}

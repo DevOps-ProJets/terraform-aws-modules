@@ -83,31 +83,37 @@ resource "aws_iam_role_policy_attachment" "AmazonEC2ContainerRegistryReadOnly" {
 # --------------------- eks node group ----------------------------------
 
 resource "aws_eks_node_group" "eks-node-group" {
-  cluster_name    = aws_eks_cluster.aws-eks-cluster.name
-  node_group_name = var.eks_node_group_name
-  node_role_arn   = aws_iam_role.eks-node-group-role.arn
-  subnet_ids      = var.node_group_subnet_ids
+  for_each       = var.eks_node_groups
+  cluster_name   = aws_eks_cluster.aws-eks-cluster.name
+  node_group_name = each.key
+  node_role_arn  = aws_iam_role.eks-node-group-role.arn
+  subnet_ids     = each.value.subnet_ids
 
   scaling_config {
-    desired_size = var.eks_node_group_desired_size
-    max_size     = var.eks_node_group_max_size
-    min_size     = var.eks_node_group_min_size
+    desired_size = each.value.desired_size
+    max_size     = each.value.max_size
+    min_size     = each.value.min_size
   }
 
   update_config {
-    max_unavailable = var.eks_node_group_max_unavailable
+    max_unavailable = each.value.max_unavailable
   }
 
-  ami_type       = var.eks_node_group_ami_type
-  instance_types = var.eks_node_group_instance_types
-  capacity_type  = var.eks_node_group_capacity_type
-  disk_size      = var.eks_node_group_disk_size
+  ami_type       = each.value.ami_type
+  instance_types = each.value.instance_types
+  capacity_type  = each.value.capacity_type
+  disk_size      = each.value.disk_size
 
   # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
-  # Otherwise, EKS will not be able to properly delete EC2 Instances and Elastic Network Interfaces.
+  # This will prevent node destruction on role or policy changes
   depends_on = [
     aws_iam_role_policy_attachment.AmazonEKSWorkerNodePolicy,
     aws_iam_role_policy_attachment.AmazonEKS_CNI_Policy,
     aws_iam_role_policy_attachment.AmazonEC2ContainerRegistryReadOnly,
   ]
+
+  # Enable 'create_before_destroy' to prevent nodes from being destroyed during updates
+  lifecycle {
+    create_before_destroy = true
+  }
 }
