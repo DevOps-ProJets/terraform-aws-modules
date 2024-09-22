@@ -15,5 +15,5 @@ output "kubeconfig-certificate-authority-data" {
 }
 
 output "eks-node-group-id" {
-  value = aws_eks_node_group.eks-node-group.id
+  value = aws_eks_node_group.eks-node-group.id[*]
 }
