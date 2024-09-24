@@ -68,3 +68,8 @@ variable "cluster_public_access" {
   default     = true
   description = "Indicates whether or not the Amazon EKS public API server endpoint is enabled."
 }
+
+variable "security_group_ids" {
+  type = list(string)
+  description = "security group for eks"
+}
