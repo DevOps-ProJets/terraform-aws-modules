@@ -1,28 +1,28 @@
 # IAM Role for RDS Monitoring
-resource "aws_iam_role" "rds_monitoring_role" {
-  name = "rds-monitoring-role"
+# resource "aws_iam_role" "rds_monitoring_role" {
+#   name = "rds-monitoring-role"
 
-  assume_role_policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Action" : "sts:AssumeRole",
-        "Effect" : "Allow",
-        "Principal" : {
-          "Service" : "monitoring.rds.amazonaws.com"
-        }
-      }
-    ]
-  })
+#   assume_role_policy = jsonencode({
+#     "Version" : "2012-10-17",
+#     "Statement" : [
+#       {
+#         "Action" : "sts:AssumeRole",
+#         "Effect" : "Allow",
+#         "Principal" : {
+#           "Service" : "monitoring.rds.amazonaws.com"
+#         }
+#       }
+#     ]
+#   })
 
-  tags = var.tags
-}
+#   tags = var.tags
+# }
 
 
-resource "aws_iam_role_policy_attachment" "rds_monitoring_role_policy" {
-  role       = aws_iam_role.rds_monitoring_role.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole"
-}
+# resource "aws_iam_role_policy_attachment" "rds_monitoring_role_policy" {
+#   role       = aws_iam_role.rds_monitoring_role.name
+#   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole"
+# }
 
 
 
@@ -86,7 +86,6 @@ resource "aws_db_instance" "default" {
   password                    =  var.password
 
   # monitoring_interval = var.monitoring_interval
-  monitoring_role_arn = aws_iam_role.rds_monitoring_role.arn
 
   skip_final_snapshot = true
 
@@ -96,7 +95,6 @@ resource "aws_db_instance" "default" {
 
   depends_on = [
     aws_db_subnet_group.rds_subnet_group,
-    aws_iam_role_policy_attachment.rds_monitoring_role_policy,
     aws_db_parameter_group.rds_custom_parameter_group
   ]
 }
