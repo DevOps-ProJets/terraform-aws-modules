@@ -3,6 +3,11 @@ variable "rds_name" {
   type        = string
 }
 
+variable "engine" {
+  description = "type of database"
+  type        = string
+}
+
 variable "db_engine_version" {
   description = "The version of the database engine"
   type        = string

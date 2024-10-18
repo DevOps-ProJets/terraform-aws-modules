@@ -64,7 +64,7 @@ resource "aws_db_subnet_group" "rds_subnet_group" {
 # Create RDS Instance with Secrets Manager Integration
 resource "aws_db_instance" "default" {
   identifier                            = var.rds_name
-  engine                                = "mysql"
+  engine                                = var.engine #"mysql"
   engine_version                        = var.db_engine_version
   instance_class                        = var.instance_class
   allocated_storage                     = var.allocated_storage
